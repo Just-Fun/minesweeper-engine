@@ -12,7 +12,7 @@ import com.codenjoy.dojo.services.RandomDice;
  */
 public class YourSolver implements Solver<Board> {
 
-    private static final String USER_NAME = Gmail.gmail; // "user@gmail.com";
+    private static final String USER_NAME = GmailMy.gmail; // "user@gmail.com";
 
     private Dice dice;
     private Board board;

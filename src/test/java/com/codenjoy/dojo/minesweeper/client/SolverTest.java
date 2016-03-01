@@ -27,38 +27,25 @@ public class SolverTest {
     }
 
     @Test
-    public void should() {
+    public void shouldStartMoveUp() {
         asertAI("☼☼☼☼☼☼☼" +
                 "☼*****☼" +
                 "☼*****☼" +
                 "☼*****☼" +
-                "☼*☺***☼" +
                 "☼*****☼" +
+                "☼☺****☼" +
                 "☼☼☼☼☼☼☼", Direction.UP);
+    }
 
+    @Test
+    public void shouldIfThereAreEmptySpaceGoForward() {
         asertAI("☼☼☼☼☼☼☼" +
                 "☼*****☼" +
                 "☼*****☼" +
-                "☼*☺***☼" +
-                "☼* ***☼" +
                 "☼*****☼" +
-                "☼☼☼☼☼☼☼", Direction.UP);
-
-        asertAI("☼☼☼☼☼☼☼" +
-                "☼*****☼" +
-                "☼*☺***☼" +
-                "☼* ***☼" +
-                "☼* ***☼" +
-                "☼*****☼" +
-                "☼☼☼☼☼☼☼", Direction.UP);
-
-        asertAI("☼☼☼☼☼☼☼" +
-                "☼*☺***☼" +
-                "☼* ***☼" +
-                "☼* ***☼" +
-                "☼* ***☼" +
-                "☼*****☼" +
-                "☼☼☼☼☼☼☼", Direction.UP);
+                "☼☺****☼" +
+                "☼ ****☼" +
+                "☼☼☼☼☼☼☼", Direction.RIGHT);
     }
 
 

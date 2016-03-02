@@ -21,6 +21,7 @@ public class YourSolver implements Solver<Board> {
     private static final String USER_NAME = GmailMy.gmail; // "user@gmail.com";
 
     private Dice dice;
+
     private Board board;
 
     public YourSolver(Dice dice) {
@@ -41,25 +42,29 @@ public class YourSolver implements Solver<Board> {
         return result.toString();
     }
 
-    private Direction getDirection(Point from, Point to) {
+    void setBoard(Board board) {
+        this.board = board;
+    }
+
+    Direction getDirection(Point from, Point to) {
         int dx = (from.getX() - to.getX());
         int dy = (from.getY() - to.getY());
         if (Math.abs(dx) > Math.abs(dy)) {
-            if (dx < 0) {
+            if (dx > 0) {
                 return Direction.LEFT;
             } else {
                 return Direction.RIGHT;
             }
         } else {
-            if (dy < 0) {
-                return Direction.DOWN;
-            } else {
+            if (dy > 0) {
                 return Direction.UP;
+            } else {
+                return Direction.DOWN;
             }
         }
     }
 
-    private Set<Point> getAllSafeHiddenPoints() {
+    Set<Point> getAllSafeHiddenPoints() {
         // если на поле пустая клеточка вокруг которой не открытые места, то я должен их открыть
         Set<Point> needToBeOpen = new HashSet<>();
 
@@ -75,7 +80,7 @@ public class YourSolver implements Solver<Board> {
 
     private Point findShortest(Set<Point> points) {
         Point me = board.getMe();
-        double min = Integer.MIN_VALUE;
+        double min = Integer.MAX_VALUE;
         Point result = null;
         for (Point destination : points) {
             int dx = Math.abs(me.getX() - destination.getX());

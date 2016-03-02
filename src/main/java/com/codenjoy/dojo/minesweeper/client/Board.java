@@ -35,14 +35,30 @@ public class Board extends AbstractBoard<Elements> {
         if (pt(x, y).isOutOf(size)) {
             return result;
         }
-        if (isAt(x - 1, y - 1, element)) result.add(new PointImpl(x,y));
-        if (isAt(x    , y - 1, element)) result.add(new PointImpl(x,y));
-        if (isAt(x + 1, y - 1, element)) result.add(new PointImpl(x,y));
-        if (isAt(x - 1, y    , element)) result.add(new PointImpl(x,y));
-        if (isAt(x + 1, y    , element)) result.add(new PointImpl(x,y));
-        if (isAt(x - 1, y + 1, element)) result.add(new PointImpl(x,y));
-        if (isAt(x    , y + 1, element)) result.add(new PointImpl(x,y));
-        if (isAt(x + 1, y + 1, element)) result.add(new PointImpl(x,y));
+        if (isAt(x - 1, y - 1, element)) {
+            result.add(new PointImpl(x - 1, y - 1));
+        }
+        if (isAt(x    , y - 1, element)) {
+            result.add(new PointImpl(x    , y - 1));
+        }
+        if (isAt(x + 1, y - 1, element)) {
+            result.add(new PointImpl(x + 1, y - 1));
+        }
+        if (isAt(x - 1, y    , element)) {
+            result.add(new PointImpl(x - 1, y    ));
+        }
+        if (isAt(x + 1, y    , element)) {
+            result.add(new PointImpl(x + 1, y  ));
+        }
+        if (isAt(x - 1, y + 1, element)) {
+            result.add(new PointImpl(x - 1, y + 1));
+        }
+        if (isAt(x    , y + 1, element)) {
+            result.add(new PointImpl(x    , y + 1));
+        }
+        if (isAt(x + 1, y + 1, element)) {
+            result.add(new PointImpl(x + 1, y + 1));
+        }
         return result;
     }
 }

@@ -54,6 +54,31 @@ public class SolverTest {
                 "☼☼☼☼☼☼☼", Direction.RIGHT);
     }
 
+
+    @Test
+    public void shouldDeadLoop1() {
+        asertAI("☼☼☼☼☼☼☼☼☼" +
+                "☼******☼" +
+                "☼☺13***☼" +
+                "☼  1***☼" +
+                "☼  1***☼" +
+                "☼*  ***☼" +
+                "☼  ****☼" +
+                "☼☼☼☼☼☼☼☼☼", Direction.DOWN);
+    }
+
+    @Test
+    public void shouldDeadLoop2() {
+        asertAI("☼☼☼☼☼☼☼☼☼" +
+                "☼******☼" +
+                "☼ 13***☼" +
+                "☼☺ 1***☼" +
+                "☼  1***☼" +
+                "☼*  ***☼" +
+                "☼  ****☼" +
+                "☼☼☼☼☼☼☼☼☼", Direction.UP);
+    }
+
     @Test
     public void shouldGetAllNeedToBeOpen() {
         ai.setBoard(board(

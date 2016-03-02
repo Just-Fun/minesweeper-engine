@@ -38,8 +38,9 @@ public class YourSolver implements Solver<Board> {
         }
         // наиюолее близкую к нам позицию из needToBeOpen
         Point destination = findShortest(needToBeOpen);
-        Direction result = PointUtils.getDirection(board.getMe(), destination);
-        return result.toString();
+
+        List<Direction> path = PointUtils.getPath(board.getMe(), destination);
+        return path.remove(0).toString();
     }
 
     void setBoard(Board board) {

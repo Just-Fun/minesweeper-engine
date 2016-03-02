@@ -3,6 +3,9 @@ package com.codenjoy.dojo.minesweeper.client;
 import com.codenjoy.dojo.client.Direction;
 import com.codenjoy.dojo.services.Point;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by serzh on 3/2/16.
  */
@@ -24,5 +27,18 @@ public class PointUtils {
                 return Direction.DOWN;
             }
         }
+    }
+
+    public static List<Direction> getPath(Point from, Point to) {
+        List<Direction> result = new LinkedList<>();
+
+        while (!from.itsMe(to)) {
+            Direction direction = getDirection(from, to);
+            result.add(direction);
+            from = direction.change(from);
+        }
+
+
+        return result;
     }
 }

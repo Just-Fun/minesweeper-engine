@@ -38,30 +38,12 @@ public class YourSolver implements Solver<Board> {
         }
         // наиюолее близкую к нам позицию из needToBeOpen
         Point destination = findShortest(needToBeOpen);
-        Direction result = getDirection(board.getMe(), destination);
+        Direction result = PointUtils.getDirection(board.getMe(), destination);
         return result.toString();
     }
 
     void setBoard(Board board) {
         this.board = board;
-    }
-
-    Direction getDirection(Point from, Point to) {
-        int dx = (from.getX() - to.getX());
-        int dy = (from.getY() - to.getY());
-        if (Math.abs(dx) > Math.abs(dy)) {
-            if (dx > 0) {
-                return Direction.LEFT;
-            } else {
-                return Direction.RIGHT;
-            }
-        } else {
-            if (dy > 0) {
-                return Direction.UP;
-            } else {
-                return Direction.DOWN;
-            }
-        }
     }
 
     Set<Point> getAllSafeHiddenPoints() {

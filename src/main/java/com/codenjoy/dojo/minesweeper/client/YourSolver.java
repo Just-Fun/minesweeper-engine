@@ -70,10 +70,7 @@ public class YourSolver implements Solver<Board> {
                         @Override
                         public boolean possible(Point atWay) {
                             Elements atFrom = board.getAt(atWay.getX(), atWay.getY());
-                            if (atFrom == Elements.BORDER) {
-                                return false;
-                            }
-                            return true;
+                            return  (atFrom != Elements.BORDER);
                         }
                     });
         }

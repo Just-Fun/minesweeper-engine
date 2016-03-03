@@ -8,8 +8,10 @@ import com.codenjoy.dojo.minesweeper.model.Elements;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.RandomDice;
+import com.codenjoy.dojo.services.algs.DeikstraFindWay;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -23,23 +25,57 @@ public class YourSolver implements Solver<Board> {
     private Dice dice;
 
     private Board board;
+    private List<Direction> path = new LinkedList<>();
 
     public YourSolver(Dice dice) {
         this.dice = dice;
     }
 
     @Override
-    public String get(Board board) {
+    public String get(final Board board) {
         this.board = board;
         if (board.isGameOver()) return "";
-        Set<Point> needToBeOpen = getAllSafeHiddenPoints();
-        if (needToBeOpen.isEmpty()) {
-            return Direction.UP.toString();
-        }
-        // наиюолее близкую к нам позицию из needToBeOpen
-        Point destination = findShortest(needToBeOpen);
 
-        List<Direction> path = PointUtils.getPath(board.getMe(), destination);
+        if (path.isEmpty()) {
+
+            Set<Point> needToBeOpen = getAllSafeHiddenPoints();
+            if (needToBeOpen.isEmpty()) {
+                return Direction.UP.toString();
+            }
+
+            path = new DeikstraFindWay().getShortestWay(board.size(), board.getMe(),
+                    new LinkedList<Point>(needToBeOpen),
+                    new DeikstraFindWay.Possible() {
+                        @Override
+                        public boolean possible(Point from, Direction direction) {
+                            Elements atFrom = board.getAt(from.getX(), from.getY());
+                            if (atFrom == Elements.BORDER) {
+                                return false;
+                            }
+
+                            Point newPoint = direction.change(from);
+                            Elements at = board.getAt(newPoint.getX(), newPoint.getY());
+                            if (at == Elements.HIDDEN) {
+                                List<Point> near = board.getNear(newPoint.getX(), newPoint.getY(), Elements.NONE);
+                                return !near.isEmpty();
+                            } else {
+                                if (at == Elements.BORDER) {
+                                    return false;
+                                }
+                            }
+                            return true;
+                        }
+
+                        @Override
+                        public boolean possible(Point atWay) {
+                            Elements atFrom = board.getAt(atWay.getX(), atWay.getY());
+                            if (atFrom == Elements.BORDER) {
+                                return false;
+                            }
+                            return true;
+                        }
+                    });
+        }
         return path.remove(0).toString();
     }
 

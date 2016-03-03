@@ -57,26 +57,26 @@ public class SolverTest {
 
     @Test
     public void shouldDeadLoop1() {
-        asertAI("☼☼☼☼☼☼☼☼☼" +
+        asertAI("☼☼☼☼☼☼☼☼" +
                 "☼******☼" +
                 "☼☺13***☼" +
                 "☼  1***☼" +
                 "☼  1***☼" +
                 "☼*  ***☼" +
                 "☼  ****☼" +
-                "☼☼☼☼☼☼☼☼☼", Direction.DOWN);
+                "☼☼☼☼☼☼☼☼", Direction.DOWN);
     }
 
     @Test
     public void shouldDeadLoop2() {
-        asertAI("☼☼☼☼☼☼☼☼☼" +
+        asertAI("☼☼☼☼☼☼☼☼" +
                 "☼******☼" +
                 "☼ 13***☼" +
                 "☼☺ 1***☼" +
                 "☼  1***☼" +
                 "☼*  ***☼" +
                 "☼  ****☼" +
-                "☼☼☼☼☼☼☼☼☼", Direction.UP);
+                "☼☼☼☼☼☼☼☼", Direction.UP);
     }
 
     @Test

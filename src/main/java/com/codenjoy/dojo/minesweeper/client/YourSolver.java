@@ -55,15 +55,16 @@ public class YourSolver implements Solver<Board> {
 
                             Point newPoint = direction.change(from);
                             Elements at = board.getAt(newPoint.getX(), newPoint.getY());
-                            if (at == Elements.HIDDEN) {
-                                List<Point> near = board.getNear(newPoint.getX(), newPoint.getY(), Elements.NONE);
-                                return !near.isEmpty();
-                            } else {
-                                if (at == Elements.BORDER) {
-                                    return false;
-                                }
+                            if (at == Elements.BORDER) {
+                                return false;
                             }
-                            return true;
+
+                            if (at != Elements.HIDDEN) {
+                                return true;
+                            }
+
+                            List<Point> near = board.getNear(newPoint.getX(), newPoint.getY(), Elements.NONE);
+                            return  !near.isEmpty();
                         }
 
                         @Override

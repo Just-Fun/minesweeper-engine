@@ -26,6 +26,8 @@ public class YourSolver implements Solver<Board> {
 
     private Board board;
     private List<Direction> path = new LinkedList<>();
+    private DeikstraFindWay findWay = new DeikstraFindWay();
+    private boolean demineMode = false;
 
     public YourSolver(Dice dice) {
         this.dice = dice;
@@ -37,49 +39,63 @@ public class YourSolver implements Solver<Board> {
         if (board.isGameOver()) return "";
 
         if (path.isEmpty()) {
-
-            Set<Point> needToBeOpen = getAllSafeHiddenPoints();
-            if (needToBeOpen.isEmpty()) {
-                return Direction.UP.toString();
+            if (demineMode) {
+                demineMode = false;
+                Direction demineDirection = getDemineDirection(board.getMe());
+                return "ACT," + demineDirection.toString();
             }
-
-            path = new DeikstraFindWay().getShortestWay(board.size(), board.getMe(),
-                    new LinkedList<Point>(needToBeOpen),
-                    new DeikstraFindWay.Possible() {
-                        @Override
-                        public boolean possible(Point from, Direction direction) {
-                            Elements atFrom = board.getAt(from.getX(), from.getY());
-                            if (atFrom == Elements.BORDER) {
-                                return false;
-                            }
-
-                            Point newPoint = direction.change(from);
-                            Elements at = board.getAt(newPoint.getX(), newPoint.getY());
-                            if (at == Elements.BORDER) {
-                                return false;
-                            }
-
-                            if (at != Elements.HIDDEN) {
-                                return true;
-                            }
-
-                            List<Point> near = board.getNear(newPoint.getX(), newPoint.getY(), Elements.NONE);
-                            return  !near.isEmpty();
-                        }
-
-                        @Override
-                        public boolean possible(Point atWay) {
-                            Elements atFrom = board.getAt(atWay.getX(), atWay.getY());
-                            return  (atFrom != Elements.BORDER);
-                        }
-                    });
+            Set<Point> needToBeOpen = getAllSafeHiddenPoints();
+            if (!needToBeOpen.isEmpty()) {
+                path = findWay.getShortestWay(board.size(), board.getMe(),
+                        new LinkedList<Point>(needToBeOpen),
+                        getPossible(board));
+            } else {
+                Set<Point> needToBeDemine = getAllneedToBeDemine();
+                demineMode = true;
+                path = findWay.getShortestWay(board.size(), board.getMe(),
+                        new LinkedList<Point>(needToBeDemine),
+                        getPossible(board));
+            }
         }
         return path.remove(0).toString();
+    }
+
+    private DeikstraFindWay.Possible getPossible(final Board board) {
+        return new DeikstraFindWay.Possible() {
+            @Override
+            public boolean possible(Point from, Direction direction) {
+                Elements atFrom = board.getAt(from.getX(), from.getY());
+                if (atFrom == Elements.BORDER) {
+                    return false;
+                }
+
+                Point newPoint = direction.change(from);
+                Elements at = board.getAt(newPoint.getX(), newPoint.getY());
+                if (at == Elements.BORDER) {
+                    return false;
+                }
+
+                if (at != Elements.HIDDEN) {
+                    return true;
+                }
+
+                List<Point> near = board.getNear(newPoint.getX(), newPoint.getY(), Elements.NONE);
+                return !near.isEmpty();
+            }
+
+            @Override
+            public boolean possible(Point atWay) {
+                Elements atFrom = board.getAt(atWay.getX(), atWay.getY());
+                return (atFrom != Elements.BORDER);
+            }
+        };
     }
 
     void setBoard(Board board) {
         this.board = board;
     }
+
+//    Set<Point> getAllOnesWithOnlyOneHiddenNear() {
 
     Set<Point> getAllSafeHiddenPoints() {
         // если на поле пустая клеточка вокруг которой не открытые места, то я должен их открыть
@@ -123,6 +139,28 @@ public class YourSolver implements Solver<Board> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    //    }
+//        return bobms;
+//        }
+//            }
+//                bobms.addAll(hiddenPoints);
+//            if (hiddenPoints.size() == 1) {
+//                    board.getNear(point.getX(), point.getY(), Elements.HIDDEN);
+//            List<Point> hiddenPoints =
+//        for (Point point : points) {
+//        List<Point> points = board.get(Elements.ONE_MINE);
+//
+//        Set<Point> bobms = new HashSet<>();
+    private Direction getDemineDirection(Point me) {
+        return null;
+    }
+
+    private Set<Point> getAllneedToBeDemine() {
+        List<Point> result = new LinkedList<>();
+
+        return new HashSet<>(result);
     }
 
 }

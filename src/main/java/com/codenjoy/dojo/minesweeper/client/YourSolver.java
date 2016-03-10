@@ -44,6 +44,7 @@ public class YourSolver implements Solver<Board> {
                 Direction demineDirection = getDemineDirection(board.getMe());
                 return "ACT," + demineDirection.toString();
             }
+
             Set<Point> needToBeOpen = getAllSafeHiddenPoints();
             if (!needToBeOpen.isEmpty()) {
                 path = findWay.getShortestWay(board.size(), board.getMe(),
@@ -57,7 +58,19 @@ public class YourSolver implements Solver<Board> {
                         getPossible(board));
             }
         }
+        if (path.size() == 0) { // сделал хак временно TODO
+            return Direction.UP.toString();
+        }
         return path.remove(0).toString();
+    }
+
+    private Direction getDemineDirection(Point from) {
+        List<Point> near = board.getNear(from.getX(), from.getY(), Elements.HIDDEN);
+        if (near.size() != 1) {
+            throw new IllegalStateException("Этого не должно случиться никогда");
+        }
+        Point mine = near.get(0);
+        return PointUtils.getDirection(from, mine);
     }
 
     private DeikstraFindWay.Possible getPossible(final Board board) {
@@ -153,13 +166,17 @@ public class YourSolver implements Solver<Board> {
 //        List<Point> points = board.get(Elements.ONE_MINE);
 //
 //        Set<Point> bobms = new HashSet<>();
-    private Direction getDemineDirection(Point me) {
-        return null;
-    }
+
 
     private Set<Point> getAllneedToBeDemine() {
         List<Point> result = new LinkedList<>();
-
+        List<Point> points = board.get(Elements.ONE_MINE);
+        for (Point point : points) {
+            List<Point> near = board.getNear(point.getX(), point.getY(), Elements.HIDDEN);
+            if (near.size() == 1 && near.get(0).distance(point) == 1) {
+                result.add(point);
+            }
+        }
         return new HashSet<>(result);
     }
 

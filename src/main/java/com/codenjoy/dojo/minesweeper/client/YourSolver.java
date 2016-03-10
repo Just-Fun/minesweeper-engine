@@ -58,18 +58,23 @@ public class YourSolver implements Solver<Board> {
                         getPossible(board));
             }
         }
-        if (path.size() == 0) { // сделал хак временно TODO
-            return Direction.UP.toString();
+        if (path.size() == 0) {
+            path = new LinkedList<>();
+            path.add(Direction.UP);
         }
         return path.remove(0).toString();
     }
 
     private Direction getDemineDirection(Point from) {
         List<Point> near = board.getNear(from.getX(), from.getY(), Elements.HIDDEN);
-        if (near.size() != 1) {
-            throw new IllegalStateException("Этого не должно случиться никогда");
+
+        Point mine = null;
+        for (Point point : near) {
+            if (from.distance(point) == 1) {
+                mine = point;
+            }
         }
-        Point mine = near.get(0);
+
         return PointUtils.getDirection(from, mine);
     }
 
@@ -171,10 +176,17 @@ public class YourSolver implements Solver<Board> {
     private Set<Point> getAllneedToBeDemine() {
         List<Point> result = new LinkedList<>();
         List<Point> points = board.get(Elements.ONE_MINE);
-        for (Point point : points) {
-            List<Point> near = board.getNear(point.getX(), point.getY(), Elements.HIDDEN);
-            if (near.size() == 1 && near.get(0).distance(point) == 1) {
-                result.add(point);
+        for (Point from : points) {
+            List<Point> near = board.getNear(from.getX(), from.getY(), Elements.HIDDEN);
+            if (near.size() == 1) {
+                Point mine = near.get(0);
+                if (mine.distance(from) == 1) {
+                    result.add(from);
+                } else {
+                    Direction direction = PointUtils.getDirection(from, mine);
+                    Point point = direction.change(from);
+                    result.add(point);
+                }
             }
         }
         return new HashSet<>(result);

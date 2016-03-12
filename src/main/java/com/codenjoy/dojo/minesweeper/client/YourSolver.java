@@ -46,22 +46,26 @@ public class YourSolver implements Solver<Board> {
             }
 
             Set<Point> needToBeOpen = getAllSafeHiddenPoints();
+            Set<Point> needToBeDemine = getAllneedToBeDemine();
+            Set<Point> allHiddenPoints = getAllHiddenPoints();
+
             if (!needToBeOpen.isEmpty()) {
                 path = findWay.getShortestWay(board.size(), board.getMe(),
                         new LinkedList<Point>(needToBeOpen),
                         getPossible(board));
-            } else {
-                Set<Point> needToBeDemine = getAllneedToBeDemine();
-                demineMode = true;
+            } else if (!needToBeDemine.isEmpty()) {
+//                demineMode = true; // ?
                 path = findWay.getShortestWay(board.size(), board.getMe(),
                         new LinkedList<Point>(needToBeDemine),
                         getPossible(board));
+            } else {
+                path = findWay.getShortestWay(board.size(), board.getMe(),
+                        new LinkedList<Point>(allHiddenPoints),
+                        getPossible(board));
+//                demineMode = false; // ?
             }
         }
-        if (path.size() == 0) {
-            path = new LinkedList<>();
-            path.add(Direction.UP);
-        }
+
         return path.remove(0).toString();
     }
 
@@ -192,4 +196,8 @@ public class YourSolver implements Solver<Board> {
         return new HashSet<>(result);
     }
 
+    public Set<Point> getAllHiddenPoints() {
+        List<Point> points = board.get(Elements.HIDDEN);
+        return new HashSet<>(points);
+    }
 }

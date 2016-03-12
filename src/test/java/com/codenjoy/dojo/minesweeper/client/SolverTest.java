@@ -80,6 +80,45 @@ public class SolverTest {
     }
 
     @Test
+    public void shouldDeadLoopTest() {
+        asertAI("☼☼☼☼☼" +
+                "☼***☼" +
+                "☼ 3*☼" +
+                "☼☺1*☼" +
+                "☼☼☼☼☼", Direction.UP);
+    }
+
+    @Test
+    public void resolveBug1() {
+        asertAI("☼☼☼☼☼☼" +
+                "☼☺ 1*☼" +
+                "☼  2*☼" +
+                "☼  2*☼" +
+                "☼‼ 2*☼" +
+                "☼☼☼☼☼☼ ", Direction.UP);
+    }
+
+    @Ignore
+    @Test
+    public void resolveBug() {
+        asertAI("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼" +
+                "☼   ☺    1****☼" +
+                "☼        2****☼" +
+                "☼     ‼  2****☼" +
+                "☼  ‼‼‼ ‼ 2****☼" +
+                "☼     ‼ ‼‼****☼" +
+                "☼       1*****☼" +
+                "☼       2*****☼" +
+                "☼‼    ‼13*****☼" +
+                "☼     2*******☼" +
+                "☼     2*******☼" +
+                "☼     2*******☼" +
+                "☼    ‼1*******☼" +
+                "☼    ‼********☼" +
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼ ", Direction.UP);
+    }
+
+    @Test
     public void shouldGetAllNeedToBeOpen() {
         ai.setBoard(board(
                 "☼☼☼☼☼☼☼" +
@@ -110,6 +149,9 @@ public class SolverTest {
         assertEquals("[[2,2], [3,2], [4,2], [2,3], [4,3], [2,4], [3,4], [4,4]]", board.getNear(3, 3, Elements.HIDDEN).toString());
         assertEquals("[]", board.getNear(50, 50, Elements.HIDDEN).toString());
     }
+
+
+
 
 
     private void asertAI(String board, Direction expected) {
